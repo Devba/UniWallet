@@ -1,6 +1,13 @@
 <?php
+//echo("<script> var currentdate = new Date(); console.log(currentdate);console.log (' emprezamos el get ') </script>");
+//var_dump($_POST);
+//echo("<script> console.log (' emprezamos el post :".var_dump($_POST)."') </script>");
+
+//var_dump ($_POST);
 define("IN_WALLET", true);
 include('common.php');
+ $admin = true;
+
 
 $mysqli = new Mysqli($db_host, $db_user, $db_pass, $db_name);
 if (!empty($_SESSION['user_session']))
@@ -31,6 +38,7 @@ if (!empty($_SESSION['user_session']))
          switch ($_POST['jsaction'])
          {
             case "new_address":
+						//	echo("<script> console.log (' creando niu dire ') </script>");
                $client->getnewaddress($user_session);
                $json['success'] = true;
                $json['message'] = "A new address was added to your wallet";

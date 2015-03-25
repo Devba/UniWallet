@@ -3,14 +3,14 @@ body {
 }
 
 .navbar-default {
-	background-color: #e7623c;
+	background-color: #141D83;
 	border-color: #b9392b;
 }
 .navbar-default .navbar-brand {
 	color: #ffffff;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-	color: #ffbbbc;
+	color: #250C75;
 }
 .navbar-default .navbar-text {
 	color: #ffffff;

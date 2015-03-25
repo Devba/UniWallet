@@ -5,48 +5,94 @@ if (!empty($error))
     echo "<p style='font-weight: bold; color: red;'>" . $error['message']; "</p>";
 }
 ?>
-<p>Logged in as: <strong><?php echo $user_session; ?></strong></p>
-<p>Current balance: <strong id="balance"><?php echo satoshitize($balance); ?></strong> <?=$short?></p>
+
+<div class="row">
+<div class="col-sm-2" ><button type="button" class="btn btn-primary" id="donate">Donate to <?=$fullname?> wallet's owner!</button></div>
+</div><br>
+	<div class="col-sm-2" > Logged in as: <strong><?php echo $user_session; ?></strong></div>
+<div class="col-sm-2" >
 <form action="index.php" method="POST">
 	<input type="hidden" name="action" value="logout" />
-	<button type="submit" class="btn btn-default">Log out</button>
+	<button type="submit" class="btn btn-info">Log out</button>
 </form>
+</div>
+<div class="col-sm-2" >Current balance: <strong id="balance"><?php echo satoshitize($balance); ?></strong> <?=$short?></div>
+
 <?php
+	$admin="true";
 if ($admin)
 {
   ?>
-  <a href="?a=home" class="btn btn-default">Go to admin home</a>
+  <a href="?a=admin_home" class="btn btn-info">Go to admin home</a>
   <?php
 }
 ?>
-<br />
-<p>Update your password:</p>
+<br>
+<br>
+<div class="row">
+	<div class="col-sm-4" ><p>Update your password:</p></div>
+</div>
 <form action="index.php" method="POST" class="clearfix" id="pwdform">
     <input type="hidden" name="action" value="password" />
     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
     <div class="col-md-2"><input type="password" class="form-control" name="oldpassword" placeholder="Current password"></div>
     <div class="col-md-2"><input type="password" class="form-control" name="newpassword" placeholder="New password"></div>
     <div class="col-md-2"><input type="password" class="form-control" name="confirmpassword" placeholder="Confirm new password"></div>
-    <div class="col-md-2"><button type="submit" class="btn btn-default">Update password</button></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-info">Update password</button></div>
 </form>
 <p id="pwdmsg"></p>
 <br />
 <p>Withdraw funds:</p>
-<button type="button" class="btn btn-default" id="donate">Donate to <?=$fullname?> wallet's owner!</button><br />
+<br />
 <p id="donateinfo" style="display: none;">Type the amount you want to donate and click <strong>Withdraw</strong></p>
 <form action="index.php" method="POST" class="clearfix" id="withdrawform">
     <input type="hidden" name="action" value="withdraw" />
     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
     <div class="col-md-4"><input type="text" class="form-control" name="address" placeholder="Address"></div>
     <div class="col-md-2"><input type="text" class="form-control" name="amount" placeholder="Amount"></div>
-    <div class="col-md-2"><button type="submit" class="btn btn-default">Withdraw</button></div>
+    <!-- <div class="col-md-2"><button id="butw" onclick="alvaro()"  >Withdraw</button></div> -->
+    <input class="btn btn-info" type="button" name="addEndDateButton" onClick="alvaro()" value="Withdraw" />
+    <input class="btn btn-danger" type="button" name="CancelWithdraw" onClick="location.reload()" value="Cancel" />
+
+
+          <div id="alvaro" style="width: 200px;" class="digits"></div> 
+
+    <!-- <input type="button" name="addEndDateButton" onClick="alert('testw');launchw()" value="test w" /> -->
 </form>
 <p id="withdrawmsg"></p>
 <br />
+
+     <script src="../UniWallet/countdown/js/jquery.countdown.js"></script>
+
+     <link href="../UniWallet/countdown/css/media.css" rel="stylesheet" type="text/css" /> 
+	<script>
+
+   function alvaro(){
+      //alert('func alvaro');
+      var d = new Date();d.setSeconds(d.getSeconds() +10); 
+      $(function(){
+        $(".digits").countdown({
+          image: "../UniWallet/countdown/img/digits.png",
+          format: "ss",
+          endTime: d,
+           timerEnd: function() {$("#withdrawform").submit() }
+        });
+      });
+    }
+
+ //     function launchw(){alert('wwww'); $("#withdrawform").submit(function( event ) {alert( "Handler for .submit() called." );event.preventDefault();)});}
+        function launchw(){$("#withdrawform").submit()}; 
+      </script>
+
+
+
+
+
+
 <p>Your addresses:</p>
 <form action="index.php" method="POST" id="newaddressform">
 	<input type="hidden" name="action" value="new_address" />
-	<button type="submit" class="btn btn-default">Get a new address</button>
+	<button type="submit" class="btn btn-primary">Get a new address</button>
 </form>
 <p id="newaddressmsg"></p>
 <br />
@@ -144,6 +190,7 @@ $("#withdrawform").submit(function(e)
 });
 $("#newaddressform").submit(function(e)
 {
+//	   console.log("alv getting new address");
     var postData = $(this).serializeArray();
     var formURL = $(this).attr("action");
     $.ajax(
@@ -153,6 +200,7 @@ $("#newaddressform").submit(function(e)
         data : postData,
         success:function(data, textStatus, jqXHR) 
         {
+								//	   console.log("inside success function");
             var json = $.parseJSON(data);
             if (json.success)
             {
@@ -172,7 +220,7 @@ $("#newaddressform").submit(function(e)
         },
         error: function(jqXHR, textStatus, errorThrown) 
         {
-            //ugh, gtfo    
+            console.log ("Algo va mal con new address")
         }
     });
     e.preventDefault();
