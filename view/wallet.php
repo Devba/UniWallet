@@ -7,7 +7,7 @@ if (!empty($error))
 ?>
 
 <div class="row">
-<div class="col-sm-2" ><button type="button" class="btn btn-primary" id="donate">Donate to <?=$fullname?> wallet's owner!</button></div>
+<!--<div class="col-sm-2" ><button type="button" class="btn btn-primary" id="donate">Donate to <?=$fullname?> wallet's owner!</button></div>-->
 </div><br>
 	<div class="col-sm-2" > Logged in as: <strong><?php echo $user_session; ?></strong></div>
 <div class="col-sm-2" >
@@ -19,7 +19,7 @@ if (!empty($error))
 <div class="col-sm-2" >Current balance: <strong id="balance"><?php echo satoshitize($balance); ?></strong> <?=$short?></div>
 
 <?php
-	$admin="true";
+	//$admin="true";
 if ($admin)
 {
   ?>
